@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+
+
+
+#define COUNT 20
+
+void* linearSearchElements(void *arr, void * key, size_t n, size_t element);
+
+int compareKey(void *k1, void * pr);
+
+typedef struct {
+    char title[150];
+    char author[100];
+    int pages;
+    float price;
+}Book;
+
+int main()
+{
+        srand(time(NULL));
+        Book books[COUNT];
+
+        const char names[][100] = {"Djodji Bodji", "Dodo Bodo", "Momo Mani", "Dudi Frudi",
+                                "Fifi Jifi", "Susi Pussi", "Poki Doki", "Djidji Bidji", "Loko Doko", "Bebi Debi"};
+        const char titles[][100] = {
+            "Cloudy with a Chance of Meatballs",
+            "Pride and Prejudice and Zombies",
+            "The House of Mirth ",
+            "Are You There, Vodka?",
+            "And Then There Were None",
+            "Their Eyes Were Watching God",
+            "The Devil Wears Prada ",
+            "Brave New World by Aldous Huxley",
+            "Bury My Heart at Wounded Knee",
+            "The Man Who Was Thursday"
+        };
+
+        const int pages[10] ={300, 20.50, 500, 870, 1354, 1982, 1123, 565, 837, 1553};
+        const float price[10] = {6.53, 85.34, 99.80, 230.1, 694, 995, 877, 112, 450, 999.99};
+
+        for(int i = 0; i < COUNT; i++) {
+            strcpy(books[i].author, names[rand()%10]);
+            strcpy(books[i].title, titles[rand()%10]);
+            books[i].pages = pages[rand()%10];
+            books[i].price = price[rand()%10];
+        }
+
+        size_t elementsN = (size_t)COUNT;
+        size_t singleElementsSize = sizeof(Book);
+
+
+
+
+            float d = 20.50;
+
+            Book *res = (Book*)linearSearchElements(books, &d, elementsN, singleElementsSize);
+            if(res == NULL) {
+                printf("Book with that price not found\n");
+            } else {
+                printf("%s is the title of the book with the price of %.2lf", res->title, d);
+            }
+
+
+
+ return 0;
+}
+
+
+
+
+
+
+// ZADACHA 2
+void* linearSearchElements(void *arr, void * key, size_t n, size_t element) {
+    for(int i = 0; i < n*element; i+= element) {
+
+    if(compareKey((arr + i), key)) {
+        return (arr + i);
+    }
+    }
+    return NULL;
+}
+
+
+//ЗАДАЧА 2
+int compareKey(void *k1, void * pr) {
+    Book  *b1 = (Book*)  k1;
+    float f = *(float*)pr;
+    if(fabs(b1->price - f) < 0.01) {
+        return 1;
+    }
+    return 0;
+}
+
+
+
